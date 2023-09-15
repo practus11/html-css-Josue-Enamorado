@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cajero Automático</title>
+    <style>
+      body {
+    background: linear-gradient(to bottom, #74ebd5, #5edcfe);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: url(atm-machine-isolated-on-white-background-free-vector.jpg) center/cover no-repeat;
+    background-attachment: fixed; /* Mantiene la imagen fija */
+    background-size: cover; /* Establece el tamaño de la imagen */
+}
+
+        .container {
+            max-width: 295px;
+            margin: 0 auto;
+            padding: 70px;
+            background: linear-gradient(to bottom, #b8e007, #7ee4f1);
+            border-radius: 90px;
+            box-shadow: 0px 100px 100px rgba(113, 89, 89, 0.2);
+        }
+        .button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cajero Automático</h1>
+        <div id="passwordForm">
+            <p>Ingrese su contraseña:</p>
+            <input type="password" id="password" class="input" placeholder="Contraseña"><br><br>
+            <button class="button" onclick="validarContraseña()">Ingresar</button>
+        </div>
+        
+        <div id="options" style="display: none;">
+            <button class="button" onclick="verSaldo()">Ver Saldo</button>
+            <button class="button" onclick="abrirRetiro()">Retirar Dinero</button>
+            <button class="button" onclick="salir()">Salir</button>
+        </div>
+
+        <p id="mensaje"></p>
+        <p id="saldo" style="display: none;">Su saldo es de Q<span id="saldoAmount">0.00</span></p>
+        <div id="retiro" style="display: none;">
+            <p>Ingrese la cantidad a retirar:</p>
+            <input type="number" id="montoRetiro" class="input" placeholder="Cantidad a retirar"><br><br>
+            <button class="button" onclick="realizarRetiro()">Confirmar Retiro</button>
+        </div>
+    </div>
+
+    <script>
+        // Datos del usuario
+        const contraseñaCorrecta = "1997";
+        let saldo = 8000;
+
+        function validarContraseña() {
+            const passwordInput = document.getElementById("password").value;
+
+            if (passwordInput === contraseñaCorrecta) {
+                document.getElementById("mensaje").textContent = "";
+                document.getElementById("passwordForm").style.display = "none";
+                document.getElementById("options").style.display = "block";
+            } else {
+                document.getElementById("mensaje").textContent = "Contraseña incorrecta";
+            }
+        }
+
+        function verSaldo() {
+            document.getElementById("saldoAmount").textContent = saldo.toFixed(2);
+            document.getElementById("saldo").style.display = "block";
+            document.getElementById("retiro").style.display = "none";
+            document.getElementById("mensaje").textContent = "";
+        }
+
+        function abrirRetiro() {
+            document.getElementById("retiro").style.display = "block";
+            document.getElementById("saldo").style.display = "none";
+            document.getElementById("mensaje").textContent = "";
+        }
+
+        function realizarRetiro() {
+    const montoRetiro = parseFloat(document.getElementById("montoRetiro").value);
+
+    if (isNaN(montoRetiro) || montoRetiro <= 0 || montoRetiro > saldo) {
+        document.getElementById("mensaje").textContent = "Monto inválido o insuficiente";
+    } else {
+        saldo -= montoRetiro;
+        document.getElementById("mensaje").textContent = `Retiró Q${montoRetiro.toFixed(2)}. Su saldo restante es de Q${saldo.toFixed(2)}`;
+        document.getElementById("saldoAmount").textContent = saldo.toFixed(2);
+        
+        // Limpiar el campo de entrada de montoRetiro después de realizar el retiro
+        document.getElementById("montoRetiro").value = "";
+    }
+}
+
+
+        function salir() {
+            document.getElementById("passwordForm").style.display = "block";
+            document.getElementById("options").style.display = "none";
+            document.getElementById("mensaje").textContent = "";
+            document.getElementById("saldo").style.display = "none";
+            document.getElementById("retiro").style.display = "none";
+            document.getElementById("montoRetiro").value = "";
+            document.getElementById("password").value = "";
+        }
+    </script>
+</body>
+</html>
